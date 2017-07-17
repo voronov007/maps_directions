@@ -31,7 +31,8 @@ class MapsDirection:
                 'region': 'en',
                 'key': gmaps_key,
                 'Referer': 'https://gmaps-directions.herokuapp.com/directions',
-                'Origin': 'https://gmaps-directions.herokuapp.com/'
+                'Origin': 'https://gmaps-directions.herokuapp.com/',
+                'Content-Type': 'application/json'
             }
             r = requests.get(directions_url, params=data, verify=False,
                              headers={})
