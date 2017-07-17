@@ -8,7 +8,10 @@ app = Flask(__name__)
 
 @app.route('/directions', methods=['POST'])
 def directions():
-    data = json.loads(request.data)
+    try:
+        data = json.loads(request.data)
+    except Exception as e:
+        return jsonify({'message': 'Error. Not JSON data'})
     origin = data['origin']
     destination = data['destination']
     result = gmaps_directions(origin, destination)
