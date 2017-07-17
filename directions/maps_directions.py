@@ -29,14 +29,12 @@ class MapsDirection:
                 'language': 'en',
                 'mode': 'driving',
                 'region': 'en',
-                'key': gmaps_key
-            }
-            headers = {
-                'referer': 'https://gmaps-directions.herokuapp.com/',
-                'origin': 'https://gmaps-directions.herokuapp.com/'
+                'key': gmaps_key,
+                'Referer': 'https://gmaps-directions.herokuapp.com/',
+                'Origin': 'https://gmaps-directions.herokuapp.com/'
             }
             r = requests.get(directions_url, params=data, verify=False,
-                             headers=headers)
+                             headers={})
             directions = r.json()['routes'][0]['legs'][0]
             self.origin_country = self.get_origin_country(directions['start_address'])
         except Exception as e:
