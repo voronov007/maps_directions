@@ -1,7 +1,7 @@
 import unittest
 import json
 
-from views import app
+from app import app
 
 
 class TestDirections(unittest.TestCase):
@@ -22,7 +22,7 @@ class TestDirections(unittest.TestCase):
         result = json.loads(directions.data)
         print(result)
         if result.get('message'):
-            assert 'Test failed. Wrong request to Google Maps'
+            self.fail('Error during request to the Google Maps')
 
     def tearDown(self):
         pass

@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 import json
 
-from maps_directions import gmaps_directions
+from directions.maps_directions import gmaps_directions
 
 app = Flask(__name__)
 
@@ -13,6 +13,11 @@ def directions():
     destination = data['destination']
     result = gmaps_directions(origin, destination)
     return jsonify(result)
+
+
+@app.route('/')
+def index():
+    return 'Directions service'
 
 
 if __name__ == '__main__':
