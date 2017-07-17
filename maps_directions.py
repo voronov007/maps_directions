@@ -1,14 +1,13 @@
 import sys
-from datetime import datetime, timedelta
+from datetime import timedelta
 import requests
 from collections import OrderedDict
 import re
 
-import googlemaps
 
-gmaps_key = 'AIzaSyDd3xYNorMNdmhj2ojL41vcgdDzCtP13l0'
+# gmaps_key = 'AIzaSyDd3xYNorMNdmhj2ojL41vcgdDzCtP13l0'
+gmaps_key = 'AIzaSyDg856CXKH3pud-BtxzJxh8_pue0V13OYQ'
 directions_url = 'https://maps.googleapis.com/maps/api/directions/json'
-gmaps = googlemaps.Client(key=gmaps_key)
 
 
 class MapsDirection:
@@ -34,22 +33,27 @@ class MapsDirection:
             r = requests.get(directions_url, params=data, verify=False)
             directions = r.json()['routes'][0]['legs'][0]
             self.origin_country = self.get_origin_country(directions['start_address'])
-            print(directions)
         except Exception as e:
             print(sys.exc_info())
             print(e)
-            return 0
+            return {'message': 'Error during request to the Google Maps'}
 
         self.total_distance = directions['distance']['value']
-        self.duration = timedelta(seconds=directions['duration']['value'])
+        self.duration = str(timedelta(seconds=directions['duration']['value']))
+
+        coords = [[directions['steps'][0]['start_location']['lat'],
+                   directions['steps'][0]['start_location']['lng']]]
         country = self.origin_country
         self.countries[country] = 0
         for step in directions['steps']:
             distance = step['distance']['value']
+            coords.append([step['end_location']['lat'],
+                           step['end_location']['lng']])
             self.countries[country] += distance
+
+            # Looking if we are in the new country
             match_obj = re.search(r'Entering (.+)</div>',
                                   step['html_instructions'])
-
             if match_obj:
                 country = match_obj.group(1)
                 if country.startswith('the '):
@@ -61,9 +65,10 @@ class MapsDirection:
                     self.countries[country] = 0
 
         return {
-            'distance': directions['distance']['value'],
-            'duration': timedelta(seconds=directions['duration']['value']),
+            'distance': self.total_distance,
+            'duration': self.duration ,
             'countries': self.countries,
+            'coordinates': coords
         }
 
     @staticmethod
@@ -72,9 +77,9 @@ class MapsDirection:
         return split_array[-1]
 
 
-def directions_calc():
-    map_direction = MapsDirection([50.455208, 30.355092], [50.850329, 4.351687])
-    result = map_direction.get_distance_per_country()
-    print(result)
+def gmaps_directions(origin, destintation):
+    map_direction = MapsDirection(origin, destintation)
+    return map_direction.get_distance_per_country()
 
-directions_calc()
+
+# gmaps_directions([50.455208, 30.355092], [50.850329, 4.351687])
