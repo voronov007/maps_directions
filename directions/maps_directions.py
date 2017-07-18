@@ -43,8 +43,9 @@ class MapsDirection:
                 'upgrade-insecure-requests': '1',
                 'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
             }
-            r = requests.get(directions_url, params=data, verify=False,
-                             headers=headers)
+            # r = requests.get(directions_url, params=data, verify=False,
+            #                  headers=headers)
+            r = requests.get(directions_url, params=data, verify=False)
             text = str(r.content)
             directions = r.json()['routes'][0]['legs'][0]
             self.origin_country = self.get_origin_country(directions['start_address'])
