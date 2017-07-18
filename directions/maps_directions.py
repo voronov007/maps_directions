@@ -1,14 +1,13 @@
 import sys
 from datetime import timedelta
-from flask import jsonify
 import requests
 from collections import OrderedDict
 import re
 
 
-gmaps_key = 'AIzaSyAshRoc9eSnjUxZehRdCHweNNc3TjQF4TA'  # Andrew's key with referer restiction
+# gmaps_key = 'AIzaSyAshRoc9eSnjUxZehRdCHweNNc3TjQF4TA'  # Andrew's key with referer restiction
 # gmaps_key = 'AIzaSyDg856CXKH3pud-BtxzJxh8_pue0V13OYQ'  # key from the test code
-# gmaps_key = 'AIzaSyAxNkIJfWft1IwItg36-mboV7mL35-49uU'  # last key from Comvoy
+gmaps_key = 'AIzaSyAxNkIJfWft1IwItg36-mboV7mL35-49uU'  # last key from Comvoy
 directions_url = 'https://maps.googleapis.com/maps/api/directions/json'
 
 
@@ -33,19 +32,7 @@ class MapsDirection:
                 'region': 'en',
                 'key': gmaps_key,
             }
-            headers = {
-                'Referer': 'https://gmaps-directions.herokuapp.com/directions',
-                'Origin': 'https://gmaps-directions.herokuapp.com/',
-                'Content-Type': 'application/json',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Encoding': 'gzip, deflate, sdch, br',
-                'Accept-Language': 'en-US,en;q=0.8',
-                'Upgrade-Insecure-Requests': 1,
-                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
-            }
-            r = requests.get(directions_url, params=data, verify=False,
-                             headers=headers)
-            # r = requests.get(directions_url, params=data, verify=False)
+            r = requests.get(directions_url, params=data, verify=False)
             text = str(r.content)
             directions = r.json()['routes'][0]['legs'][0]
             self.origin_country = self.get_origin_country(directions['start_address'])
