@@ -1,5 +1,6 @@
 import sys
 from datetime import timedelta
+from flask import jsonify
 import requests
 from collections import OrderedDict
 import re
@@ -22,6 +23,7 @@ class MapsDirection:
         self.destination = str(destination[0]) + ',' + str(destination[1])
 
     def get_distance_per_country(self):
+        text = ''
         try:
             data = {
                 'origin': self.origin,
@@ -32,22 +34,23 @@ class MapsDirection:
                 'key': gmaps_key,
             }
             headers = {
-                'Referer': 'https://gmaps-directions.herokuapp.com/directions',
-                'Origin': 'https://gmaps-directions.herokuapp.com/',
-                'Content-Type': 'application/json',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'accept-encoding': 'gzip, deflate, sdch, br',
-                'accept-language': 'en-US,en;q=0.8',
-                'upgrade-insecure-requests': '1',
+                # 'Referer': 'https://gmaps-directions.herokuapp.com/directions',
+                # 'Origin': 'https://gmaps-directions.herokuapp.com/',
+                # 'Content-Type': 'application/json',
+                # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                # 'accept-encoding': 'gzip, deflate, sdch, br',
+                # 'accept-language': 'en-US,en;q=0.8',
+                # 'upgrade-insecure-requests': '1',
             }
-            r = requests.get(directions_url, params=data, verify=False,
-                             headers=headers)
+            r = requests.get(directions_url, params=data, verify=False)
+            text = str(r.content)
             directions = r.json()['routes'][0]['legs'][0]
             self.origin_country = self.get_origin_country(directions['start_address'])
         except Exception as e:
             print(sys.exc_info())
             print(e)
-            return {'message': 'Error during request to the Google Maps'}
+            return {'message': 'Error during request to the Google Maps',
+                    'text': text}
 
         self.total_distance = directions['distance']['value']
         self.duration = str(timedelta(seconds=directions['duration']['value']))
