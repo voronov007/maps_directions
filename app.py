@@ -13,7 +13,6 @@ def directions():
     except Exception as e:
         return jsonify({
             'message': 'Error. Not JSON data',
-            'data': request.data,
             'exception': str(e)
         })
     origin = data['origin']

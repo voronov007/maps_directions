@@ -5,9 +5,9 @@ from collections import OrderedDict
 import re
 
 
-gmaps_key = 'AIzaSyAshRoc9eSnjUxZehRdCHweNNc3TjQF4TA'  # Andrew's key with referer restiction
+# gmaps_key = 'AIzaSyAshRoc9eSnjUxZehRdCHweNNc3TjQF4TA'  # Andrew's key with referer restiction
 # gmaps_key = 'AIzaSyDg856CXKH3pud-BtxzJxh8_pue0V13OYQ'  # key from the test code
-# gmaps_key = 'AIzaSyAxNkIJfWft1IwItg36-mboV7mL35-49uU'  # last key from Comvoy
+gmaps_key = 'AIzaSyAxNkIJfWft1IwItg36-mboV7mL35-49uU'  # last key from Comvoy
 directions_url = 'https://maps.googleapis.com/maps/api/directions/json'
 
 
