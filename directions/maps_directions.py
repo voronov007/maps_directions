@@ -43,7 +43,8 @@ class MapsDirection:
                     'text': text}
 
         self.total_distance = directions['distance']['value']
-        self.duration = str(timedelta(seconds=directions['duration']['value']))
+        # self.duration = str(timedelta(seconds=directions['duration']['value']))
+        self.duration = round(int(directions['duration']['value'])/60.0) # minutes
 
         coords = [[directions['steps'][0]['start_location']['lat'],
                    directions['steps'][0]['start_location']['lng']]]
@@ -70,7 +71,7 @@ class MapsDirection:
 
         return {
             'distance': self.total_distance,
-            'duration': self.duration ,
+            'duration': self.duration,
             'countries': self.countries,
             'coordinates': coords
         }
