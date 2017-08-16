@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from directions.cross_domain import crossdomain
 import json
 
 from directions.maps_directions import gmaps_directions
@@ -7,6 +8,7 @@ app = Flask(__name__)
 
 
 @app.route('/directions', methods=['POST'])
+@crossdomain(origin='*')
 def directions():
     try:
         data = json.loads(request.data)
