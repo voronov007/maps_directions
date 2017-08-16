@@ -25,7 +25,7 @@ def directions():
 
 @app.route('/')
 def index():
-    return 'Directions service'
+    return 'Directions service updated'
 
 
 if __name__ == '__main__':
